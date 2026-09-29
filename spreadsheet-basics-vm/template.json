@@ -1,12 +1,13 @@
 {
   "schema_version": 1,
   "title": "Summarize CSV columns in a spreadsheet",
-  "slug": "spreadsheet-column-summary-container",
+  "slug": "spreadsheet-column-summary-vm",
   "version": 1,
   "image": "finance",
-  "compute_provider": "container",
+  "compute_provider": "vm",
   "machine_size": "c3-standard-4",
   "needs_dind": false,
+  "needs_nested_virt": false,
   "duration_minutes": 3,
   "skills_assessed": [
     "Opening CSV data in a spreadsheet",

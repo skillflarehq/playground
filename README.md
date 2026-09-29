@@ -24,17 +24,17 @@ This repository holds **example Skillflare challenges**: timed, role-shaped work
 
 ## Package layout
 
-Each example is one folder named for that pack. Import the file that matches the step. A folder that contains all three imports as `variation.json` unless you ask for another layer.
+Each example is one folder named for that pack. Import the file that matches the step. A folder that contains all three imports as `challenge.json` unless you ask for another layer.
 
 | Path | Role |
 |------|------|
 | `<pack>/requirements.json` | Job description text and optional author prompt. Enough for the builder. |
-| `<pack>/challenge.json` | Metadata, `compute_provider`, skills, tool names, video rubric, and how to generate a session. |
-| `variation.json` | One locked instance: concrete problem statement, rubric, compute, and `assets` paths. This replaces `skillflare.json`. |
-| `truth_pack.md` | Grader mark scheme. Travels with `variation.json`. |
-| `workspace/` | Starter files named by `variation.json` `assets`. |
+| `<pack>/template.json` | Metadata, `compute_provider`, skills, tool names, video rubric, and how to generate a session. |
+| `challenge.json` | One locked instance: concrete problem statement, rubric, compute, and `assets` paths. This replaces `skillflare.json`. |
+| `truth_pack.md` | Grader mark scheme. Travels with `challenge.json`. |
+| `workspace/` | Starter files named by `challenge.json` `assets`. |
 
-`compute_provider` is required on `challenge.json` and `variation.json` and must be one of:
+`compute_provider` is required on `template.json` and `challenge.json` and must be one of:
 
 | Value | Meaning |
 |-------|---------|

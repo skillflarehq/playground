@@ -7,6 +7,7 @@
   "compute_provider": "container",
   "machine_size": "c3-standard-4",
   "needs_dind": false,
+  "needs_nested_virt": false,
   "duration_minutes": 90,
   "skills_assessed": [
     "Integrated three-statement financial modeling",
