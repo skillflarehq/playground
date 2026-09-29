@@ -1,0 +1,24 @@
+R22 vapor-compression refrigeration system — design data
+========================================================
+
+Evaporating temperature (Tev):     −10 °C
+Useful superheat:                    0 K
+Suction superheat:                  10 K
+Condensing temperature (Tcond):    +30 °C
+Refrigerant:                       R22
+Compression efficiency (η_comp):   0.70
+
+Carnot reference:
+  Inverse Carnot cycle with ΔT = 9 K at both the evaporator and the condenser.
+  T_cold = Tev + 9 K
+  T_hot  = Tcond − 9 K
+
+Notes:
+  - Useful superheat 0 K means saturated vapor leaves the evaporator at Tev.
+  - Suction superheat 10 K means the compressor inlet is 10 K above saturation
+    at evaporator pressure (compressor inlet temperature = 0 °C).
+  - Obtain R22 thermodynamic properties from any source you choose
+    (tables, CoolProp/REFPROP, online tools, etc.) and document the source.
+  - Deliverable must include cooling EER and heat-pump COP, both in W/W
+    (EU nomenclature): EER = q_evap / w_comp (cooling); COP = q_cond / w_comp
+    (heating). No US BTU/(W·h) conversion required.

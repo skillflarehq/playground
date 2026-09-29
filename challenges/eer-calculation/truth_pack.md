@@ -1,0 +1,78 @@
+# Truth pack
+
+## Correctness summary
+
+Candidate produces a written thermodynamic calculation for an R22 vapor-compression cycle using the **instance** design data from the brief / `system_parameters.txt` (Tev, useful superheat, suction superheat, Tcond, η_comp, Carnot ΔT). Using EU nomenclature (EN 14511-style steady-state metrics), the deliverable should include a state-point table; cooling EER = q_evap / w_comp (W/W); heat-pump COP = q_cond / w_comp (W/W) for when the same machine heats; inverse Carnot EER with the stated ΔT at both heat exchangers (`T_cold = Tev + ΔT`, `T_hot = Tcond − ΔT`); and Carnot-relative efficiency η_Carnot = EER / EER_Carnot.
+
+### Skeleton instance reference (CoolProp R22)
+
+Numeric bands below apply to the **default skeleton only**: Tev = −10 °C, useful SH = 0 K, suction SH = 10 K, Tcond = +30 °C, η_comp = 0.70, Carnot ΔT = 9 K. For other combinatorial instances, judge method first, then whether enthalpy-derived results are coherent for that instance’s parameters (do not force the skeleton EER band onto a different Tev/Tcond/η/ΔT).
+
+| Quantity | Reference | Acceptable band (±3% on enthalpy-derived results, or stated) |
+|----------|-----------|---------------------------------------------------------------|
+| P_evap (sat @ −10 °C) | ≈ 355 kPa | Property source may differ slightly |
+| P_cond (sat @ +30 °C) | ≈ 1192 kPa | Property source may differ slightly |
+| h at evaporator outlet (sat vapor, useful SH = 0) | ≈ 401.2 | Spot-check consistency with source |
+| h1 compressor inlet (0 °C @ P_evap) | ≈ 408.2 | Spot-check consistency with source |
+| h3 = h4 (sat liquid @ +30 °C) | ≈ 236.6 | Spot-check consistency with source |
+| h2s (isentropic discharge @ P_cond) | ≈ 439.9 | Spot-check consistency with source |
+| q_useful = h_evap_out − h4 | ≈ 164.6 | Prefer useful-superheat convention |
+| w_comp = (h2s − h1) / 0.7 | ≈ 45.3 | η_comp must divide isentropic work |
+| EER (useful, q_evap / w_comp) | ≈ 3.63 | ≈ 3.5–3.8 |
+| q_cond = q_evap + w_comp | ≈ 209.9 | Energy balance |
+| COP (q_cond / w_comp, or EER + 1) | ≈ 4.63 | ≈ 4.5–4.8 |
+| EER_Carnot (ΔT = 9 K) | ≈ 12.37 | ≈ 12.3–12.4 (formula is exact for given ΔT) |
+| η_Carnot (useful) | ≈ 0.29 | ≈ 0.27–0.32 |
+
+Skeleton Carnot check: T_cold = (−10 + 9) + 273.15 = 272.15 K; T_hot = (30 − 9) + 273.15 = 294.15 K; EER_Carnot = 272.15 / (294.15 − 272.15) ≈ 12.37.
+
+If the candidate includes suction-line superheat in the refrigerating effect (skeleton: q = h1 − h4 ≈ 171.5), EER ≈ 3.79, COP ≈ 4.79 — accept if they clearly state that assumption. Prefer the useful-superheat convention (q based on evaporator-outlet enthalpy) when both appear without explanation.
+
+## Method notes
+
+1. **Useful superheat 0 K** → evaporator outlet is saturated vapor at the stated Tev.
+2. **Suction superheat** → compressor inlet is at Tev + suction SH and evaporator pressure (superheated vapor).
+3. **Condenser outlet** → saturated liquid at the stated Tcond (unless candidate justifies subcooling; none is specified).
+4. **Expansion** → isenthalpic: h4 = h3.
+5. **Isentropic compression** → from state 1 (h1, s1) to P_cond at s = s1 → h2s.
+6. **Actual compression** → w_comp = (h2s − h1) / η_comp with the stated η_comp; h2 = h1 + w_comp.
+7. **Refrigerating effect (preferred)** → q_evap = h_evap_out − h4 (useful capacity excludes suction-line heating).
+8. **EER (cooling, EU / EN 14511-style)** → EER = q_evap / w_comp in W/W. Do not require US customary BTU/(W·h) conversion (× 3.412).
+9. **COP (heating / heat pump)** → COP = q_cond / w_comp with q_cond = q_evap + w_comp (equivalently COP = EER + 1).
+10. **Carnot reference with the stated ΔT on both sides** (refrigeration / cooling comparison):
+    - T_cold = Tev + ΔT (then convert to kelvin)
+    - T_hot = Tcond − ΔT (then convert to kelvin)
+    - EER_Carnot = T_cold / (T_hot − T_cold)
+11. **Relative efficiency** → η_Carnot = EER / EER_Carnot.
+
+Inspect the state table for correct phase identification, then check energy formulas and the Carnot temperatures against the instance parameters. Property values may differ by source; judge method first, then whether final EER/COP are coherent for that instance.
+
+## Expected artifacts
+
+- Written calculation, long-form notes, or spreadsheet covering state points, q_evap, q_cond, w_comp, EER, COP, EER_Carnot, and η_Carnot
+- Optional: property-software export or p-h sketch supporting the numbers
+- No requirement for Dockerfile, application code, or containerization
+
+## Acceptable approaches
+
+- Hand calculation from ASHRAE / manufacturer / Engineering Toolbox R22 tables with interpolation
+- Spreadsheet with tabulated properties
+- CoolProp, REFPROP, or similar property libraries
+- Online refrigerant property calculators, if the source is cited
+- Including or excluding suction-line enthalpy rise in q_evap, if the choice is stated (prefer useful-superheat convention)
+- Computing COP as q_cond / w_comp or as EER + 1, if energy balance is consistent
+- Optionally reporting a US customary BTU/(W·h) “EER” in addition — not required; do not fail if SI EER and COP are correct
+
+## Failure signals
+
+- Treats useful superheat 0 K and suction superheat as the same state (or puts suction SH into the evaporator while claiming useful SH = 0)
+- Applies η_comp inverted (multiplies isentropic work by η_comp instead of dividing)
+- Carnot EER uses Tev and Tcond directly without the stated ΔT on both sides, or uses the wrong signs (must be T_cold = Tev + ΔT, T_hot = Tcond − ΔT)
+- Carnot formula uses °C instead of absolute temperature, or uses heat-engine Carnot efficiency instead of refrigerator EER
+- Omits cooling EER (q_evap / w)
+- Omits heat-pump COP (q_cond / w or EER + 1)
+- Treats US BTU/(W·h) × 3.412 conversion as the required EER and never reports SI W/W EER (confuses EU EER with US customary units)
+- No property source and no readable state table — numbers cannot be audited
+- Ignores compression efficiency and assumes isentropic compression only
+- Turns the task into building software instead of a thermodynamic calculation
+- Grades or plans against a different Tev/Tcond/η/ΔT than the instance brief / starter files

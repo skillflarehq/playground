@@ -1,0 +1,47 @@
+# Skillflare challenge examples
+
+This repository holds **example Skillflare challenges**: timed, role-shaped work-sample packages used as assessments on Skillflare.
+
+## Examples
+
+| Package | Description |
+|---------|-------------|
+| [`eer-calculation`](eer-calculation/) | Thermodynamics / refrigeration calculation work sample |
+| [`enex-dc-hvac-support`](enex-dc-hvac-support/) | Emicon CRAH data-hall support incident (Enex Technical Support Engineer HVAC) |
+| [`heat-pump-design`](heat-pump-design/) | Industrial heat-pump heating COP work sample (R1233zd(E)) |
+| [`co2-chiller-sizing`](co2-chiller-sizing/) | Transcritical R744 wine-cellar chiller sizing work sample |
+| [`sales-manager`](sales-manager/) | Field sales planning work sample |
+| [`financial-analyst`](financial-analyst/) | Manufacturing three-statement forecast work sample |
+| [`weather-basics`](weather-basics/) | Spreadsheet screen: min / max / average on a CSV (skill spec; sample extract in the workspace) |
+| [`docker-node`](docker-node/) | Docker/Node example package layout |
+| [`fastify-load`](fastify-load/) | Fastify `/summary` load-test (autocannon SLA, AI steering) |
+| [`cpp`](cpp/) | C++ CMake HTTP service (cpp-httplib handlers) |
+| [`java`](java/) | Java 21 Maven HTTP service (JDK HttpServer handlers) |
+| [`android`](android/) | Kotlin Jetpack Compose app (Home / Status / Summary + CSV) |
+| [`modelica-test`](modelica-test/) | OpenModelica mass-spring-damper (MSL translational plant + step-response KPIs) |
+| [`opentofu`](opentofu/) | OpenTofu dry-run for DigitalOcean managed Postgres |
+| [`supabase-bus-ticketing`](supabase-bus-ticketing/) | Vue + Supabase Kenya bus ticketing work sample |
+
+## Package layout
+
+Each example is three self-contained layers. Import the file that matches the step. A folder that contains all three imports as `variation.json` unless you ask for another layer.
+
+| Path | Role |
+|------|------|
+| `requirements.json` | Job description text and optional author prompt. Enough for the builder. |
+| `challenge.json` | Metadata, `compute_provider`, skills, tool names, video rubric, and how to generate a session. |
+| `variation.json` | One locked instance: concrete problem statement, rubric, compute, and `assets` paths. This replaces `skillflare.json`. |
+| `truth_pack.md` | Grader mark scheme. Travels with `variation.json`. |
+| `workspace/` | Starter files named by `variation.json` `assets`. |
+
+`compute_provider` is required on `challenge.json` and `variation.json` and must be one of:
+
+| Value | Meaning |
+|-------|---------|
+| `local` | Browser desktop (`screen/`); no cloud machine |
+| `container` | Fly.io Machine webtop |
+| `vm` | Google Cloud VM webtop |
+
+[`weather-basics`](weather-basics/) is `local`. The other complete examples are `container`.
+
+See each package’s README for details.

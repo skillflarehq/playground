@@ -1,0 +1,34 @@
+# Sales manager challenge (Skillflare package)
+
+Canonical Skillflare challenge package for a **field sales manager** last-mile planning work sample. Closed-world content lives in `skillflare.json`; grader prose stays in `truth_pack.md`.
+
+| Path | Role |
+|------|------|
+| `skillflare.json` | Manifest (metadata, role, problem_statement, rubric, combinatorial variation catalog) |
+| `truth_pack.md` | Grader mark scheme (required `##` headings) |
+| `workspace/` | Candidate starter CSVs (import into Sheets / use with QGIS) — base-image skeleton |
+
+The skeleton instance is Nankanga / Sunking Pico Plus / 500 units / $10,000 (matches `workspace/` CSVs and `problem_statement`). With **variations enabled** at challenge create, packaging fans out buffer slots; each run picks an **unused valid permutation** of vetted factor options (`community` × `product` × `unit_target` × `budget_usd`), applies `variation.apply` templates (brief + CSVs), and writes a thin layer — **no LLM at runtime**.
+
+Valid budget/unit pairs are constrained to `budget_usd / unit_target ∈ [19, 21]` (≈ $20/unit) so opex headroom after wholesale stays similar across products. Community options vary demographics, livelihood, transit hub, and distance-scaled trip costs; near-hub Mbeya Rural villages use Uyole/Mbalizi routing rather than Igoma.
+
+`variation.strategy: "combinatorial"` is the builder-output shape: factor option bundles + `ratio_range` constraints + mustache-style `{{key}}` templates. Invariants document authoring intent; runtime does not interpret free-text invariants.
+
+```bash
+node challenges/validate-challenge.mjs challenges/sales-manager
+```
+
+Do not put solution plans or answer keys under `workspace/`.
+
+
+## Layers
+
+This pack is three self-contained files:
+
+| Path | Role |
+|------|------|
+| `requirements.json` | Job description text and author prompt |
+| `challenge.json` | Metadata, skills, tools, video rubric, and combinatorial generation |
+| `variation.json` | One locked instance (problem statement and workspace asset paths) |
+| `truth_pack.md` | Grader mark scheme, used with `variation.json` |
+| `workspace/` | Starter files named by `variation.json` assets |
